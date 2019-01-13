@@ -206,7 +206,7 @@ contract MixinMatchOrders is
             matchedFillResults.right.makerAssetFilledAmount = rightMakerAssetAmountRemaining;
             matchedFillResults.right.takerAssetFilledAmount = rightTakerAssetAmountRemaining;
             matchedFillResults.left.takerAssetFilledAmount = matchedFillResults.right.makerAssetFilledAmount;
-            // Round down to ensure the maker's exchange rate does not exceed the price specified by the order. 
+            // Round down to ensure the maker's exchange rate does not exceed the price specified by the order.
             // We favor the maker when the exchange rate must be rounded.
             matchedFillResults.left.makerAssetFilledAmount = safeGetPartialAmountFloor(
                 leftOrder.makerAssetAmount,
