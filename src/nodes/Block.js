@@ -5,6 +5,7 @@ const {
 } = require('prettier');
 
 const printPreservingEmptyLines = require('./print-preserving-empty-lines');
+const printComments = require('./print-comments');
 
 const Block = {
   print: ({ node, options, path, print }) => {
@@ -13,33 +14,14 @@ const Block = {
       return '{}';
     }
 
-    const parts = [
+    return concat([
       '{',
       indent(line),
-      indent(printPreservingEmptyLines(path, 'statements', options, print))
-    ];
-
-    if (node.comments) {
-      let first = true;
-      path.each(commentPath => {
-        if (first) {
-          first = false;
-        } else {
-          parts.push(indent(line));
-        }
-        const comment = commentPath.getValue();
-        if (comment.trailing || comment.leading) {
-          return;
-        }
-        comment.printed = true;
-        parts.push(options.printer.printComment(commentPath));
-      }, 'comments');
-    }
-
-    parts.push(line);
-    parts.push('}');
-
-    return concat(parts);
+      indent(printPreservingEmptyLines(path, 'statements', options, print)),
+      ...printComments(node, path, options),
+      line,
+      '}'
+    ]);
   }
 };
 

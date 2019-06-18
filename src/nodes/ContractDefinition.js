@@ -3,7 +3,9 @@ const {
     builders: { concat, group, indent, join, line }
   }
 } = require('prettier');
+
 const printPreservingEmptyLines = require('./print-preserving-empty-lines');
+const printComments = require('./print-comments');
 
 const inheritance = (node, path, print) => {
   if (node.baseContracts.length > 0) {
@@ -21,10 +23,11 @@ const inheritance = (node, path, print) => {
 };
 
 const body = (node, path, options, print) => {
-  if (node.subNodes.length > 0) {
+  if (node.subNodes.length > 0 || node.comments) {
     return concat([
       indent(line),
       indent(printPreservingEmptyLines(path, 'subNodes', options, print)),
+      ...printComments(node, path, options),
       line
     ]);
   }
