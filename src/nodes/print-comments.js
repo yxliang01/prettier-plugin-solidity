@@ -21,7 +21,7 @@ const printComments = (node, path, options) => {
       }
 
       comment.printed = true;
-      parts.push(options.printer.printComment(commentPath));
+      parts.push(options.printer.printComment(commentPath, options));
     }, 'comments');
   }
   return parts;
