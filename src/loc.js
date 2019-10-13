@@ -4,7 +4,7 @@ const getRange = (index, node) => {
   if (node.range) {
     return node.range[index];
   }
-  if (node.expression.range) {
+  if (node.expression !== undefined && node.expression.range) {
     return node.expression.range[index];
   }
   return null;
